@@ -24,7 +24,7 @@ const EditTodo = () => {
                         <h5
                             className="modal-title"
                             id="editLabel">
-                            Update Todo Details
+                            Atualizar detalhes
                         </h5>
                 <button
                     type="button"
@@ -47,12 +47,12 @@ const EditTodo = () => {
                 <button
                     type="button"
                     className="btn btn-secondary"
-                    data-bs-dismiss="modal">Close
+                    data-bs-dismiss="modal">Fechar
                 </button>
                 <button
                     type="button"
                     className="btn btn-primary">
-                    Update Todo
+                    Atualizar
                 </button>
             </div>
                     </div>

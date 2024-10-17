@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import React, { useState, useEffect } from 'react'
+import { collection, addDoc, serverTimestamp, getDocs } from 'firebase/firestore'
 
 import { db } from '../services/firebase.config'
 import EditTodo from './EditTodo';
@@ -7,7 +7,23 @@ import EditTodo from './EditTodo';
 const Todo = () => {
   const collectionRef = collection(db, 'todo');
 
+  const [todos, setTodo] = useState([]);
   const [createTodo, setCreateTodo] = useState("");
+
+  useEffect(() => {
+    const getTodo = async () => {
+      await getDocs(collectionRef).then((result) => {
+        // let todoData = todo.docs.map((doc) => ({ ...doc.data(), id: did }))
+        // result.docs.forEach(todo => {
+        //  console.log(todo.data());
+        // })
+        let todosData = result.docs.map((doc) => ({ ...doc.data(), id: doc.id}));
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
+  getTodo()
+  }, [])
 
   console.log(createTodo);
 
@@ -37,7 +53,7 @@ const Todo = () => {
                   data-bs-toggle="modal"
                   data-bs-target="#addModal"
                   type="button"
-                  className="btn btn-info">Nova Tarefa
+                  className="btn btn-info">Adicionar Tarefa
                 </button>
 
         <div className="todo-list">
@@ -52,27 +68,6 @@ const Todo = () => {
                 </span>
               </div>
               &nbsp; Abrir tutorial<br />
-              <i>10/11/2024</i>
-            </span>
-            <span className=" float-end mx-3">
-              <EditTodo /></span>
-            <button
-              type="button"
-              className="btn btn-danger float-end">Deletar
-            </button>
-          </div>
-
-          <div className="todo-item">
-            <hr />
-            <span>
-              <div className="checker" >
-                <span className="" >
-                  <input
-                    type="checkbox"
-                  />
-                </span>
-              </div>
-              &nbsp; Abrir tuturial<br />
               <i>10/11/2024</i>
             </span>
             <span className=" float-end mx-3">
@@ -103,7 +98,7 @@ const Todo = () => {
                 <h5
                   className="modal-title"
                   id="addModalLabel">
-                  Nova Tarefa
+                  Adicionar Tarefa
                 </h5>
                 <button
                   type="button"
@@ -123,10 +118,10 @@ const Todo = () => {
               <div className="modal-footer">
                 <button
                   className="btn btn-secondary"
-                  data-bs-dismiss="modal">Close
+                  data-bs-dismiss="modal">Fechar
                 </button>
 
-                <button className="btn btn-primary">Create Todo</button>
+                <button className="btn btn-primary">Criar</button>
               </div>
             </div>
           </form>
