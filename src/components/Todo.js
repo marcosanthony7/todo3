@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, serverTimestamp, getDocs } from 'firebase/firestore';
 
-import { db } from '../services/firebase.config'
+import { db } from '../services/firebase.config';
 import EditTodo from './EditTodo';
 
 const Todo = () => {
@@ -21,10 +21,10 @@ const Todo = () => {
         setTodo(todosData);
       }).catch((err) => {
         console.log(err);
-      })
-    }
-  getTodo()
-  }, [])
+      });
+    };
+  getTodo();
+  }, [collectionRef]);
 
   console.log(createTodo);
 
@@ -36,12 +36,12 @@ const Todo = () => {
         todo: createTodo,
         isChecked: false,
         timestamp: serverTimestamp()
-      })
+      });
       window.location.reload();
     } catch (err) {
       console.log(err);
-    }
-  }
+    };
+  };
 
   return (
     <>
