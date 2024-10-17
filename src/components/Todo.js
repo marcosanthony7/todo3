@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { collection, addDoc, serverTimestamp, getDocs } from 'firebase/firestore'
+import React, { useState, useEffect } from 'react';
+import { collection, addDoc, serverTimestamp, getDocs } from 'firebase/firestore';
 
 import { db } from '../services/firebase.config'
 import EditTodo from './EditTodo';
@@ -18,6 +18,7 @@ const Todo = () => {
         //  console.log(todo.data());
         // })
         let todosData = result.docs.map((doc) => ({ ...doc.data(), id: doc.id}));
+        setTodo(todosData);
       }).catch((err) => {
         console.log(err);
       })
@@ -56,28 +57,30 @@ const Todo = () => {
                   className="btn btn-info">Adicionar Tarefa
                 </button>
 
-        <div className="todo-list">
-          <div className="todo-item">
-            <hr />
-            <span>
-              <div className="checker" >
-                <span className="" >
-                  <input
-                    type="checkbox"
-                  />
-                </span>
-              </div>
-              &nbsp; Abrir tutorial<br />
-              <i>10/11/2024</i>
-            </span>
-            <span className=" float-end mx-3">
-              <EditTodo /></span>
-            <button
-              type="button"
-              className="btn btn-danger float-end">Deletar
-            </button>
+        {todos.map(({ todo, id }) =>
+          <div className="todo-list" key={id}>
+            <div className="todo-item">
+              <hr />
+              <span>
+                <div className="checker" >
+                  <span className="" >
+                    <input
+                      type="checkbox"
+                    />
+                  </span>
+                </div>
+                &nbsp;{todo}<br />
+                <i>10/11/2024</i>
+              </span>
+              <span className=" float-end mx-3">
+                <EditTodo /></span>
+              <button
+                type="button"
+                className="btn btn-danger float-end">Deletar
+              </button>
+            </div>
           </div>
-        </div> {/* end todo-list */}
+        )} {/* end todo-list */}
               </div> {/* end card-body */}
             </div> {/* end div card */}
           </div> {/* end div main */}
@@ -111,7 +114,7 @@ const Todo = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Add a Todo"
+                  placeholder="Ex.: Descrição da tarefa"
                   onChange={(e) => setCreateTodo(e.target.value)}
                 />
               </div>
