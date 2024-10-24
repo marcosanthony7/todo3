@@ -1,20 +1,60 @@
 import React from 'react';
 
-const EditTodo = () => {
+const EditTodo = ({ todo, id }) => {
+    const [todos, setTodos] = useState([todo]);
+
+    const updateTodo = async (e) => {
+        e.preventDefault()
+        try {
+            const todoDocument = doc(db, "todo", id);
+            await updateDoc(todoDocument, {
+                todo: todos
+            });
+        window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    
     return (
         <>
+            {todos.map(({ todo, id }) =>
+                <div className="todo-list" key={id}>
+                    <div className="todo-item">
+                        <hr />
+                        <span>
+                            <div className="checker" >
+                                <span className="" >
+                                    <input type="checkbox"/>
+                                </span>
+                            </div>
+                            &nbsp;{todo}<br />
+                            <i>10/11/2024</i>
+                        </span>
+                        <span className=" float-end mx-3">
+                            <EditTodo todo={todo} id={id} />
+                        </span>
+                        <button
+                            type="button"
+                            className="btn btn-danger float-end"
+                            onClick={() => deleteTodo(id)}>Delete
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <button
                 type="button"
                 className="btn btn-primary"
                 data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                data-bs-target={`#id${id}`}
                 >
                 Editar
             </button>
 
             <div
                 className="modal fade"
-                id="exampleModal"
+                id={`id${id}`}
                 tabIndex="-1"
                 aria-labelledby="editLabel"
                 aria-hidden="true">
@@ -39,6 +79,8 @@ const EditTodo = () => {
                 <input
                     type="text"
                     className="form-control"
+                    defaultValue={todo}
+                    onChange={e => setTodos(e.target.value)}
                 />
                 </form>
 
@@ -51,8 +93,8 @@ const EditTodo = () => {
                 </button>
                 <button
                     type="button"
-                    className="btn btn-primary">
-                    Atualizar
+                    className="btn btn-primary"
+                    onClick={e => updateTodo(e)}>Atualizar
                 </button>
             </div>
                     </div>

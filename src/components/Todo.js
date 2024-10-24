@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, serverTimestamp, getDocs } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, getDocs, doc, deleteDoc } from 'firebase/firestore';
 
 import { db } from '../services/firebase.config';
 import EditTodo from './EditTodo';
@@ -43,6 +43,18 @@ const Todo = () => {
     };
   };
 
+  //Delete Handler
+  const deleteTodo = async (id) => {
+    try {
+        window.confirm("Are you sure you want to delete this Todo?")
+        const documentRef = doc(db, "todo", id);
+        await deleteDoc(documentRef)
+        window.location.reload();
+    } catch (err) {
+        console.log(err);
+    }
+  }
+
   return (
     <>
       <div className="container">
@@ -73,10 +85,12 @@ const Todo = () => {
                 <i>10/11/2024</i>
               </span>
               <span className=" float-end mx-3">
-                <EditTodo /></span>
+                <EditTodo />
+              </span>
               <button
                 type="button"
-                className="btn btn-danger float-end">Deletar
+                className="btn btn-danger float-end"
+                onClick={() => deleteTodo(id)}>Deletar
               </button>
             </div>
           </div>
